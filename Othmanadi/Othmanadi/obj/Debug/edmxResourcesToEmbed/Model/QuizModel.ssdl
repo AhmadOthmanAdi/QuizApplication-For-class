@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QuizAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Quiz">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="QuizType" Type="varchar" MaxLength="50" />
+    <Property Name="Question_Text" Type="varchar(max)" />
+    <Property Name="OptionA" Type="varchar" MaxLength="50" />
+    <Property Name="OptionB" Type="varchar" MaxLength="50" />
+    <Property Name="OptionC" Type="varchar" MaxLength="50" />
+    <Property Name="OptionD" Type="varchar" MaxLength="50" />
+    <Property Name="Answer" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="QuizScore">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="Score" Type="int" />
+    <Property Name="QuizDate" Type="date" />
+  </EntityType>
+  <EntityType Name="SysUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="FullName" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_QuizScore_QuizScore">
+    <End Role="SysUser" Type="Self.SysUser" Multiplicity="0..1" />
+    <End Role="QuizScore" Type="Self.QuizScore" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SysUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="QuizScore">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QuizAppModelStoreContainer">
+    <EntitySet Name="Quiz" EntityType="Self.Quiz" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QuizScore" EntityType="Self.QuizScore" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SysUser" EntityType="Self.SysUser" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_QuizScore_QuizScore" Association="Self.FK_QuizScore_QuizScore">
+      <End Role="SysUser" EntitySet="SysUser" />
+      <End Role="QuizScore" EntitySet="QuizScore" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QuizAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Quiz">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="QuizType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Question_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="OptionA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OptionB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OptionC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OptionD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="QuizScore">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="Score" Type="Int32" />
+    <Property Name="QuizDate" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="SysUser" Relationship="Self.FK_QuizScore_QuizScore" FromRole="QuizScore" ToRole="SysUser" />
+  </EntityType>
+  <EntityType Name="SysUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="QuizScores" Relationship="Self.FK_QuizScore_QuizScore" FromRole="SysUser" ToRole="QuizScore" />
+  </EntityType>
+  <Association Name="FK_QuizScore_QuizScore">
+    <End Role="SysUser" Type="Self.SysUser" Multiplicity="0..1" />
+    <End Role="QuizScore" Type="Self.QuizScore" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SysUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="QuizScore">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QuizAppEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Quizs" EntityType="Self.Quiz" />
+    <EntitySet Name="QuizScores" EntityType="Self.QuizScore" />
+    <EntitySet Name="SysUsers" EntityType="Self.SysUser" />
+    <AssociationSet Name="FK_QuizScore_QuizScore" Association="Self.FK_QuizScore_QuizScore">
+      <End Role="SysUser" EntitySet="SysUsers" />
+      <End Role="QuizScore" EntitySet="QuizScores" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

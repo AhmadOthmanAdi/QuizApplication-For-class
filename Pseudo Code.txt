@@ -1,0 +1,13 @@
+User initiate QuizzApp
+if User is not registered then register
+otherwise
+	print quiz options to choose
+	read input from user
+		initialize list of Questions
+		read quiz questions from database
+			for each question in Questions
+			print question
+			print four answers
+			read answer input from user
+			if answer is correct add to score and print the feedback 
+if quiz is finished save score with player name
